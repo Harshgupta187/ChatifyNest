@@ -90,21 +90,47 @@ export const login = async(req, res)=>{
     const tokenData = {
       userId: user._id
     }
-    const token =await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {expiresIn:"Id"});
+    const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 
-    return res
-    .status(200)
-    .cookie("token" , token , {maxAge: 1+ 24+60 + 60 + 100 ,httpOnly: true , sameSite: 'strict'})
+    return res.status(200)
+    .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 100, httpOnly: true, sameSite: 'strict' })
     .json({
-      _id: user._id,
-      username: user.username,
-      fullName: user.fullName,
-      profilePhoto: user.profilePhoto
-    })
+        _id: user._id,
+        username: user.username,
+        fullName: user.fullName,
+        profilePhoto: user.profilePhoto
+    });
 
 
   }
   catch(error){
     console.log(error)
+  }
+}
+
+export const logout = (req, res) => {
+    try {
+        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+            message: "logged out successfully."
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+        success: false,
+        message: "Server error during logout."
+        })
+    }
+}
+
+export const getOtherUsers = async(req, res) =>{
+  try {
+    const loggedInUserId = req.id;
+    const otherUsers = await User.find({_id: {
+      $ne: loggedInUserId
+    }}).select("-password")
+
+    return res.status(200).json(otherUsers);
+  } catch (error) {
+    
   }
 }
