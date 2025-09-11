@@ -3,8 +3,9 @@ dotenv.config({ });
 
 import express from "express";
 import ConnectDB from "./config/database.js";
-import router from "./routes/user.route.js";
+import userRouter from "./routes/user.route.js";
 import cookieParser from "cookie-parser";
+import messageRouter from "./routes/message.route.js"
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,7 +14,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json()); 
 app.use(cookieParser());
 
-app.use("/api/v1/user", router);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/message", messageRouter)
 
 app.get("/", (req, res) => {
   res.send("✅ Server is running");
