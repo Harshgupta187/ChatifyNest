@@ -20,4 +20,22 @@ code {
     monospace;
 }
 
+::-webkit-scrollbar {
+    /* Customize the scrollbar width */
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    /* Customize the scrollbar track */
+    background-color: aliceblue;
+    
+}
+
+::-webkit-scrollbar-thumb {
+    /* Customize the scrollbar thumb */
+    
+    background: #1f1e1e;
+    border-radius: 10px;
+}
+
 

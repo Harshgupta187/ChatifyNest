@@ -6,6 +6,7 @@ import ConnectDB from "./config/database.js";
 import userRouter from "./routes/user.route.js";
 import cookieParser from "cookie-parser";
 import messageRouter from "./routes/message.route.js"
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.urlencoded({extended:true}));
 app.use(express.json()); 
 app.use(cookieParser());
+const corsOption= {
+  origin: 'http://localhost:300',
+  credentials: true
+
+}
+app.use(cors(corsOption));
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/message", messageRouter)

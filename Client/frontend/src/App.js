@@ -4,6 +4,7 @@ import HomePage from "./components/HomePage.jsx";
 import Signup from "./components/Signup.jsx";
 import Login from "./components/Login.jsx";
 
+
 // ✅ Add errorElement to handle unmatched routes
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ function App() {
   return (
     <div className="p-4 h-screen flex items-center justify-center">
       <RouterProvider router={router} />
+      
     </div>
   );
 }
