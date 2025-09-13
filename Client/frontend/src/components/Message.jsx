@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Message() {
+function Message({message}) {
   return (
     <div >
             <div className="chat-image avatar">
@@ -9,9 +9,9 @@ function Message() {
                 </div>
             </div>
             <div className="chat-header">
-                <time className="text-xs opacity-50 text-white">12:45</time>
+                <time className="text-xs text-white opacity-50">12:45</time>
             </div>
-            <div className={`chat-bubble ${message?.senderId !== authUser?._id ? 'bg-gray-200 text-black' : ''} `}>{message?.message}</div>
+            <div className='chat-bubble' >{message?.message}</div>
         </div>
   )
 }
