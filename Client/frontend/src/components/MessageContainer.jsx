@@ -1,25 +1,53 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SendInput from './SendInput'
 import Messages from "./Messages"
+import { useDispatch, useSelector } from 'react-redux'
+import { setSelectedUser } from '../redux/userSlice'
 
 function MessageContainer() {
+  const {selectedUser, authUser} = useSelector(store => store.user)
+
+  const dispatch = useDispatch();
+
+  useEffect(() =>{
+    return ()=>dispatch(setSelectedUser)
+  }, [selectedUser]);
+  
   return (
-    <div className='md:min-w-[550px] flex flex-col'>
-      <div className='flex gap-2 items-center bg-zinc-800 text-white'>
-        <div className='avatar online'>
-          <div className='w-12 rounded-full '>
-            <img src="" alt="user-profile" />
+    <>
+      {
+          selectedUser !== null ? (
+            <div className='md:min-w-[550px] flex flex-col'>
+        <div className='flex items-center gap-2 text-white bg-zinc-800'>
+          <div className='avatar online'>
+            <div className='w-12 rounded-full '>
+              <img src={selectedUser?.profilePhoto} alt="user-profile" />
+            </div>
+          </div>
+          <div className='flex flex-col flex-1'>
+            <div className='flex justify-between gap-2'>
+              <p>{selectedUser?.fullName}</p>
+            </div>
           </div>
         </div>
-        <div className='flex flex-col flex-1'>
-          <div className='flex justify-between gap-2'>
-            <p>patel</p>
-          </div>
+        <Messages/>
+        <SendInput/>
         </div>
-      </div>
-      <Messages/>
-      <SendInput/>
-    </div>
+        ) 
+        
+        : (
+          <div className='md:min-w-[550px] flex flex-col justify-center' >
+            <h1 className='text-4xl font-bold text-black'>Hi, {authUser?.fullName}</h1>
+            <h1 className='text-2xl text-black'>
+              "Let's start a conversation"
+            </h1>
+          </div>
+         
+        )
+        
+      }
+    </>
+    
   )
 }
 
