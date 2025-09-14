@@ -7,15 +7,34 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors:{
-    origin=['http://localhost:3000'],
+    origin:['http://localhost:3000'],
     methods:['GET', 'POST'],
 
   }
 });
+export const getReceiverSocketId= (receiverId) =>{
+  return userSocketMap[receiverId];
+}
 
+const userSocketMap = {
+  
+}; // {userId -> socketId}
 
 io.on('connection' , (soc) =>{
-  console.log('user connected' , soc.id)
+  console.log('user connected' , soc.id);
+
+  const userId = soc.handshake.query.userId;
+
+  if(userId !== undefined){
+    userSocketMap[userId] = soc.id
+  }
+  soc.on('disconnect' , () => {
+    console.log('user disconnected', soc.id);
+    delete userSocketMap[userId];
+
+    io.emit('getOnlineUsers' , Object.keys(userSocketMap));
+  })
+
 })
 
 

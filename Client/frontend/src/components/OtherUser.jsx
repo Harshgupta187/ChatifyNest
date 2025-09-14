@@ -8,7 +8,9 @@ const OtherUser =(props) => {
   
   const dispatch = useDispatch();
 
-  const {selectedUser} = useSelector(store => store.user)
+  const {selectedUser , onlineUsers} = useSelector(store => store.user)
+
+  const isOnline = onlineUsers.includes(user._id);
   
   const selectedUserHandler = () =>{
     dispatch(setSelectedUser(user))
@@ -17,7 +19,7 @@ const OtherUser =(props) => {
   return (
     <div>
       <div onClick={()=> selectedUserHandler(user)} className={`${selectedUser?._id === user?._id ? 'bg-zinc-200 text-black': 'text-white' } flex items-center gap-2 p-2 text-white hover:text-black rounded-sm cursor-pointer  hover:bg-zinc-200`}>
-        <div className='avatar online'>
+        <div className={`avatar ${isOnline ? 'online' : ''}`}>
           <div className='w-12 rounded-full '>
             <img src={user?.profilePhoto} alt="user-profile" />
           </div>
