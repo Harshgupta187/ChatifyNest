@@ -16,9 +16,7 @@ export const getReceiverSocketId= (receiverId) =>{
   return userSocketMap[receiverId];
 }
 
-const userSocketMap = {
-  
-}; // {userId -> socketId}
+const userSocketMap = {}; // {userId -> socketId}
 
 io.on('connection' , (soc) =>{
   console.log('user connected' , soc.id);
@@ -28,6 +26,10 @@ io.on('connection' , (soc) =>{
   if(userId !== undefined){
     userSocketMap[userId] = soc.id
   }
+  
+  io.emit('getOnlineUsers',Object.keys(userSocketMap));
+
+
   soc.on('disconnect' , () => {
     console.log('user disconnected', soc.id);
     delete userSocketMap[userId];

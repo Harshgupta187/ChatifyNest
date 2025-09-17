@@ -29,3 +29,9 @@ export const isAuthenticated = async(req , res , next) =>{
     console.log(error)
   }
 }
+
+
+const req = {
+    id:"",
+}
+req.id = "sdlbgnjdfn";
