@@ -1,17 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 import HomePage from "./components/HomePage.jsx";
 import Signup from "./components/Signup.jsx";
 import Login from "./components/Login.jsx";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import io from "socket.io-client"
 
-import { setSocket } from './redux/SocketSlice.js';
-import { setOnlineUsers } from './redux/userSlice';
+import { initSocket, closeSocket } from "./redux/socketInstance.js"; // ✅ singleton socket
+import { setOnlineUsers } from "./redux/userSlice";
 
-
-// ✅ Add errorElement to handle unmatched routes
+// ✅ Router configuration
 const router = createBrowserRouter([
   {
     path: "/",
@@ -33,38 +30,31 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  
-  const dispatch = useDispatch()
-  
-  const{authUser} = useSelector(store => store.user)
-  const {socket} = useSelector(store=>store.socket);
-  
-  useEffect(() =>{
-    if(authUser){
-      const socketIo = io('http://localhost:5000' , {
-        query: {userId:authUser._id}
-      });
-      dispatch(setSocket(socketIo))
-      
-      socketIo.on('getOnlineUsers' , (onlineUserStatus)=>{
-       dispatch(setOnlineUsers(onlineUserStatus)) 
-      });
-      return () => socketIo.close();
-    }
-    else{
-      if(socket){
-        socket.close();
-        dispatch(setSocket(null));
-      }
-    }
-  }, [authUser]);
+  const dispatch = useDispatch();
+  const { authUser } = useSelector((store) => store.user);
 
-  
-  
+  useEffect(() => {
+    if (authUser) {
+      // ✅ create or reuse socket
+      const socket = initSocket(authUser._id);
+
+      socket.on("getOnlineUsers", (onlineUserStatus) => {
+        dispatch(setOnlineUsers(onlineUserStatus));
+      });
+
+      return () => {
+        socket.off("getOnlineUsers");
+        closeSocket();
+      };
+    } else {
+      // ✅ cleanup if user logs out
+      closeSocket();
+    }
+  }, [authUser, dispatch]);
+
   return (
     <div className="flex items-center justify-center h-screen p-4">
       <RouterProvider router={router} />
-      
     </div>
   );
 }

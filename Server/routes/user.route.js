@@ -3,6 +3,7 @@ import { getOtherUsers, login, logout, register } from "../controllers/user.cont
 import { isAuthenticated } from "../middleware/isAuthenticated.middleware.js";
 const userRouter = express.Router();
 
+
 userRouter.route("/register").post(register);
 
 userRouter.route("/login").post(login)

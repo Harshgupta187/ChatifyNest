@@ -71,7 +71,7 @@ const Login = () => {
           </div>
           
           
-          <p className='my-2 text-center'>Don't have an account? <Link to="/Signup"> Signup </Link></p>
+          <p className='my-2 text-center'>Don't have an account? <Link to="/register"> Signup </Link></p>
           <div>
             <button type='submit' className='mt-2 border btn btn-block btn-sm border-slate-700'>Login</button>
           </div>

@@ -33,6 +33,8 @@ const Signup = () => {
         }, 
         withCredentials: true
       })
+
+      
       if (res.data.success) {
         navigate("/login");
         toast.success(res.data.message);
