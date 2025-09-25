@@ -42,7 +42,7 @@ function SendInput() {
         </button>
       </div>
     </form>
-  )
+  ) 
 }
 
 export default SendInput

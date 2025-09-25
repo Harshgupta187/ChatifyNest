@@ -1,54 +1,37 @@
-// socket.js
-import express from "express";
+import {Server} from "socket.io";
 import http from "http";
-import { Server } from "socket.io";
+import express from "express";
 
 const app = express();
+
 const server = http.createServer(app);
-
-// CORS setup to allow your frontend
 const io = new Server(server, {
-  cors: {
-    origin: ["http://localhost:3000"], // your frontend URL
-    methods: ["GET", "POST"],
-  },
+    cors:{
+        origin:['http://localhost:3000'],
+        methods:['GET', 'POST'],
+    },
 });
 
-// Map to store userId -> socketId
-const userSocketMap = {};
-
-// Helper function to get socketId by userId
 export const getReceiverSocketId = (receiverId) => {
-  return userSocketMap[receiverId];
-};
+    return userSocketMap[receiverId];
+}
 
-// Listen for connections
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+const userSocketMap = {}; // {userId->socketId}
 
-  // Get userId from handshake query
-  const userId = socket.handshake.query.userId;
-  if (userId) {
-    userSocketMap[userId] = socket.id;
-  }
 
-  // Emit the list of online users to all clients
-  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+io.on('connection', (socket)=>{
+    const userId = socket.handshake.query.userId
+    if(userId !== undefined){
+        userSocketMap[userId] = socket.id;
+    } 
 
-  // Handle disconnect
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-    if (userId) delete userSocketMap[userId];
+    io.emit('getOnlineUsers',Object.keys(userSocketMap));
 
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
-  });
-});
+    socket.on('disconnect', ()=>{
+        delete userSocketMap[userId];
+        io.emit('getOnlineUsers',Object.keys(userSocketMap));
+    })
 
-// Start the server
-const PORT = 5000;
-server.listen(PORT, () => {
-  console.log(`Socket.IO server running on http://localhost:${PORT}`);
-});
+})
 
-// Export app and io if needed elsewhere
-export { app, io, server };
+export {app, io, server};

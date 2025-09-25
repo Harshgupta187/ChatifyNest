@@ -18,20 +18,37 @@ const OtherUser =(props) => {
   
   return (
     <div>
-      <div onClick={()=> selectedUserHandler(user)} className={`${selectedUser?._id === user?._id ? 'bg-zinc-200 text-black': 'text-white' } flex items-center gap-2 p-2 text-white hover:text-black rounded-sm cursor-pointer  hover:bg-zinc-200`}>
-        <div className={`avatar ${isOnline ? 'online' : ''}`}>
-          <div className='w-12 rounded-full '>
-            <img src={user?.profilePhoto} alt="user-profile" />
-          </div>
-        </div>
-        <div className='flex flex-col flex-1'>
-          <div className='flex justify-between gap-2 text-white'>
-            <p>{user?.fullName}</p>
-          </div>
-        </div>
+  <div
+    onClick={() => selectedUserHandler(user)}
+    className={`${
+      selectedUser?._id === user?._id
+        ? "bg-zinc-200 text-black shadow-md"
+        : "text-white"
+    } flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-zinc-200 hover:text-black`}
+  >
+    {/* Avatar */}
+    <div className={`avatar ${isOnline ? "online" : ""}`}>
+      <div className="w-12 h-12 overflow-hidden rounded-full ring-2 ring-zinc-300">
+        <img
+          src={user?.profilePhoto}
+          alt="user-profile"
+          className="object-cover w-full h-full"
+        />
       </div>
-      <div className='h-1 py-0 my-0 divider '></div>
     </div>
+
+    {/* User Info */}
+    <div className="flex flex-col flex-1">
+      <div className="flex justify-between gap-2">
+        <p className="text-base font-semibold">{user?.fullName}</p>
+      </div>
+    </div>
+  </div>
+
+  {/* Divider */}
+  <div className="h-[1px] bg-zinc-700 opacity-30 my-2"></div>
+</div>
+
   )
 }
 
