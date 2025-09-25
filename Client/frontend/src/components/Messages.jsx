@@ -1,26 +1,27 @@
 import React from 'react'
-import Message from "./Message"
-import useGetMessage from '../hooks/useGetMessage'; 
-import { useSelector } from 'react-redux';
+import Message from './Message'
+import useGetMessages from '../hooks/useGetMessages';
+import { useSelector } from "react-redux";
 import useGetRealTimeMessage from '../hooks/useGetRealTimeMessage';
 
-const Messages = () =>  {
-  useGetMessage();
-  useGetRealTimeMessage();
-  const {messages}= useSelector(store => store.message)
+const Messages = () => {
+    useGetMessages();
+    useGetRealTimeMessage();
+    const { messages } = useSelector(store => store.message);
+    return (
+        <div className='flex-1 px-4 overflow-auto'>
+            {
+               messages && messages?.map((message) => {
+                    return (
+                        <Message key={message._id} message={message} />
+                    )
+                })
+            }
 
-  if(!messages) return ;
-  return (
-    <div className=''>
-      {
-        messages &&messages?.map((message) =>{
-          return (
-            <Message key={message._id} message= {message}/>
-          )
-        })
-      }
-    </div>
-  )
+        </div>
+
+
+    )
 }
 
 export default Messages
