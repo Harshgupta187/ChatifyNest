@@ -6,8 +6,8 @@ import Login from './components/Login';
 import { useEffect, useState } from 'react';
 import {useSelector,useDispatch} from "react-redux";
 import io from "socket.io-client";
-import { setSocket } from './redux/socketSlice';
-import { setOnlineUsers } from './redux/userSlice';
+import { setSocket } from './redux/socketSlice.js';
+import { setOnlineUsers } from './redux/userSlice.js';
 import { BASE_URL } from '.';
 
 const router = createBrowserRouter([
