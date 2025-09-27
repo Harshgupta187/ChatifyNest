@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import Sidebar from './Sidebar'
 import MessageContainer from './MessageContainer.jsx'
 import { useSelector } from 'react-redux'
