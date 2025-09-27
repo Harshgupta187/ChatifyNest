@@ -6,30 +6,32 @@ import { BASE_URL } from '..';
 
 const useGetOtherUsers = () => {
   const dispatch = useDispatch();
-  const { authUser } = useSelector((store) => store.user);
+  const { authUser } = useSelector(store => store.user);
 
   useEffect(() => {
     const fetchOtherUsers = async () => {
-      if (!authUser) {
-        console.log("No auth user, skipping fetch.");
+      if (!authUser) return; // authUser must exist
+
+      const token = localStorage.getItem("token"); // ✅ get JWT token
+      if (!token) {
+        console.log("No token found, skipping fetch.");
         return;
       }
 
       try {
-        axios.defaults.withCredentials = true;
-        const res = await axios.get(`${BASE_URL}/api/v1/user`, {
-          withCredentials: true // ✅ send cookies
+        const res = await axios.get(`${BASE_URL}/api/v1/user/other-users`, {
+          headers: { Authorization: `Bearer ${token}` } // send token
         });
 
-        console.log("✅ other users -> ", res.data);
+        console.log("✅ Other users -> ", res.data);
         dispatch(setOtherUsers(res.data));
       } catch (error) {
-        console.error("❌ Failed to fetch other users", error);
+        console.error("❌ Failed to fetch other users", error.response?.data || error.message);
       }
     };
 
     fetchOtherUsers();
-  }, [authUser]);
+  }, [authUser, dispatch]);
 };
 
 export default useGetOtherUsers;
