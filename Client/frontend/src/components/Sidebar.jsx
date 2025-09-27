@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setAuthUser, setOtherUsers, setSelectedUser } from '../redux/userSlice.js';
-import { setMessages } from '../redux/messageSlice.js';
+import { setMessages } from '../redux/MessageSlice.js';
 import { BASE_URL } from '..';
  
 const Sidebar = () => {
