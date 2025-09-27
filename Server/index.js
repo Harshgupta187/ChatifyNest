@@ -26,16 +26,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Your socket.io configuration should also include CORS
-const io = new Server(server, {
-    cors: {
-        origin: [
-            "https://chatifynest-1.onrender.com",  // Your frontend URL
-            "http://localhost:3000"
-        ],
-        credentials: true
-    }
-});
+
 
 
 // routes
