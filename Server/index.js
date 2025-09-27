@@ -1,40 +1,38 @@
-// const express = require('express')// method-1
-import express from "express"; // method-2
-import dotenv from "dotenv"; 
+import express from "express";
+import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import userRoute from "./routes/user.route.js";
 import messageRoute from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { app,server } from "./socket/socket.js";
+import { app, server } from "./socket/socket.js";  // Import from socket.js
+
 dotenv.config({});
 
- 
 const PORT = process.env.PORT || 5000;
 
-// middleware
-app.use(express.urlencoded({extended:true}));
-app.use(express.json()); 
-app.use(cookieParser());
+// CORS middleware for Express routes
 app.use(cors({
     origin: [
-        "https://chatifynest-1.onrender.com",  // Your frontend URL
-        "http://localhost:3000"                // For local development
+        "https://chatifynest-1.onrender.com",
+        "http://localhost:3000"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Other middleware
+app.use(express.urlencoded({extended:true}));
+app.use(express.json()); 
+app.use(cookieParser());
 
+// Routes
+app.use("/api/v1/user", userRoute); 
+app.use("/api/v1/message", messageRoute);
 
-
-// routes
-app.use("/api/v1/user",userRoute); 
-app.use("/api/v1/message",messageRoute);
- 
-
-server.listen(PORT, ()=>{
+// Start server
+server.listen(PORT, () => {
     connectDB();
-    console.log(`Server listen at port ${PORT}`);
+    console.log(`Server listening on port ${PORT}`);
 });

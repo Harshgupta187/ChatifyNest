@@ -7,29 +7,39 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors:{
-        origin:['http://localhost:3000'],
+        origin:[
+            'https://chatifynest-1.onrender.com',  // Your production frontend URL
+            'http://localhost:3000'                // For local development
+        ],
         methods:['GET', 'POST'],
+        credentials: true
     },
 });
+
+const userSocketMap = {}; // {userId->socketId}
 
 export const getReceiverSocketId = (receiverId) => {
     return userSocketMap[receiverId];
 }
 
-const userSocketMap = {}; // {userId->socketId}
-
-
 io.on('connection', (socket)=>{
+    console.log('User connected:', socket.id);
+    
     const userId = socket.handshake.query.userId
-    if(userId !== undefined){
+    if(userId !== "undefined" && userId){
         userSocketMap[userId] = socket.id;
+        console.log(`User ${userId} mapped to socket ${socket.id}`);
     } 
 
-    io.emit('getOnlineUsers',Object.keys(userSocketMap));
+    // Emit online users to all connected clients
+    io.emit('getOnlineUsers', Object.keys(userSocketMap));
 
     socket.on('disconnect', ()=>{
-        delete userSocketMap[userId];
-        io.emit('getOnlineUsers',Object.keys(userSocketMap));
+        console.log('User disconnected:', socket.id);
+        if(userId){
+            delete userSocketMap[userId];
+        }
+        io.emit('getOnlineUsers', Object.keys(userSocketMap));
     })
 
 })
