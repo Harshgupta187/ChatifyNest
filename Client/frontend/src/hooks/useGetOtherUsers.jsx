@@ -1,27 +1,35 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { setOtherUsers } from '../redux/userSlice.js';
-import { BASE_URL } from '..';
+import { useDispatch, useSelector } from "react-redux";
+import { setOtherUsers } from "../redux/userSlice.js";
+import { BASE_URL } from "..";
 
 const useGetOtherUsers = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { authUser } = useSelector((state) => state.user); // get logged-in user
 
-    useEffect(() => {
-        const fetchOtherUsers = async () => {
-            try {
-                axios.defaults.withCredentials = true;
-                const res = await axios.get(`${BASE_URL}/api/v1/user`);
-                // store
-                console.log("other users -> ",res);
-                dispatch(setOtherUsers(res.data));
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchOtherUsers();
-    }, [])
+  useEffect(() => {
+    const fetchOtherUsers = async () => {
+      try {
+        const token = authUser?.token || localStorage.getItem("token"); // make sure token is available
+        if (!token) return console.warn("No token found, skipping fetch.");
 
-}
+        const res = await axios.get(`${BASE_URL}/api/v1/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // attach token
+          },
+          withCredentials: true, // just in case backend uses cookies
+        });
 
-export default useGetOtherUsers
+        console.log("other users -> ", res.data);
+        dispatch(setOtherUsers(res.data));
+      } catch (error) {
+        console.error("Failed to fetch other users", error);
+      }
+    };
+
+    fetchOtherUsers();
+  }, [authUser, dispatch]); // refetch if authUser changes
+};
+
+export default useGetOtherUsers;
