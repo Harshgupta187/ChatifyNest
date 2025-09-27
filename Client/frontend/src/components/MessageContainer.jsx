@@ -1,7 +1,6 @@
 import SendInput from './SendInput.jsx'
 import Messages from './Messages.jsx';
 import { useSelector } from "react-redux";
-import { setSelectedUser } from '../redux/userSlice.js';
 
 const MessageContainer = () => {
     const { selectedUser, authUser, onlineUsers } = useSelector(store => store.user);
