@@ -37,7 +37,7 @@ const SendInput = () => {
                     onChange={(e) => setMessage(e.target.value)}
                     type="text"
                     placeholder='Type your message...'
-                    className='block w-full p-3 pr-12 text-gray-800 placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                    className='block w-full p-3 pr-12 text-gray-800 placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-full bg-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 />
                 <button 
                     type="submit" 

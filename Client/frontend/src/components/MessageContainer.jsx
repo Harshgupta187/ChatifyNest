@@ -2,6 +2,7 @@ import SendInput from './SendInput.jsx'
 import Messages from './Messages.jsx';
 import { useSelector } from "react-redux";
 
+
 const MessageContainer = () => {
     const { selectedUser, authUser, onlineUsers } = useSelector(store => store.user);
     
@@ -12,16 +13,18 @@ const MessageContainer = () => {
             {
                 selectedUser !== null ? (
                     <div className='md:min-w-[550px] flex flex-col bg-gray-50'>
-                        <div className='flex items-center gap-3 px-4 py-4 border-b border-gray-100 shadow-sm bg-indigo-950'>
+                        <div className='flex items-center gap-3 px-4 py-4 bg-gray-800 border-b border-gray-100 shadow-sm'>
                             <div className={`avatar ${isOnline ? 'online' : ''}`}>
                                 <div className='w-12 rounded-full shadow-sm ring-2 ring-blue-100'>
                                     <img src={selectedUser?.profilePhoto} alt="user-profile" />
                                 </div>
                             </div>
                             <div className='flex flex-col flex-1'>
-                                <p className='font-semibold text-yellow-400'>{selectedUser?.fullName}</p>
-                                <p className={`text-sm ${isOnline ? 'text-green-600' : 'text-gray-500'}`}>
-                                    {isOnline ? 'Online' : 'Offline'}
+                                <h2 className='text-xl font-bold tracking-wide text-white '>
+                                    {selectedUser?.fullName}
+                                </h2>
+                                <p className={`text-sm font-medium ${isOnline ? 'text-green-600' : 'text-gray-500'}`}>
+                                    {isOnline ? '🟢 Online' : '⚫ Offline'}
                                 </p>
                             </div>
                         </div>
