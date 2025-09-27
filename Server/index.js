@@ -16,11 +16,26 @@ const PORT = process.env.PORT || 5000;
 app.use(express.urlencoded({extended:true}));
 app.use(express.json()); 
 app.use(cookieParser());
-const corsOption={
-    origin:'https://chatifynest-1.onrender.com',
-    credentials:true
-};
-app.use(cors(corsOption)); 
+app.use(cors({
+    origin: [
+        "https://chatifynest-1.onrender.com",  // Your frontend URL
+        "http://localhost:3000"                // For local development
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Your socket.io configuration should also include CORS
+const io = new Server(server, {
+    cors: {
+        origin: [
+            "https://chatifynest-1.onrender.com",  // Your frontend URL
+            "http://localhost:3000"
+        ],
+        credentials: true
+    }
+});
 
 
 // routes
