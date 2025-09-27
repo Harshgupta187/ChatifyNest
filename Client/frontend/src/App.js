@@ -6,7 +6,7 @@ import Login from './components/Login.jsx';
 import { useEffect, useState } from 'react';
 import {useSelector,useDispatch} from "react-redux";
 import io from "socket.io-client";
-import { setSocket } from './redux/socketSlice.js';
+import { setSocket } from './redux/SocketSlice.js';
 import { setOnlineUsers } from './redux/userSlice.js';
 import { BASE_URL } from '.';
 
