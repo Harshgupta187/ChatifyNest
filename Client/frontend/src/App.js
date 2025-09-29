@@ -1,41 +1,63 @@
-import Signup from './components/Signup.jsx';
+import Signup from './components/Signup';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from './components/HomePage.jsx';
-import Login from './components/Login.jsx';
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import HomePage from './components/HomePage';
+import Login from './components/Login';
+import { useEffect, useState } from 'react';
+import {useSelector,useDispatch} from "react-redux";
+import io from "socket.io-client";
+import { setSocket } from './redux/SocketSlice.js';
 import { setOnlineUsers } from './redux/userSlice.js';
-import { connectSocket, disconnectSocket, getSocket } from './utils/socket.js';
+import { BASE_URL } from '.';
 
 const router = createBrowserRouter([
-  { path: "/", element: <HomePage /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/login", element: <Login /> },
-]);
+  {
+    path:"/",
+    element:<HomePage/>
+  },
+  {
+    path:"/signup",
+    element:<Signup/>
+  },
+  {
+    path:"/login",
+    element:<Login/>
+  },
 
-function App() {
-  const { authUser } = useSelector((store) => store.user);
+])
+
+function App() { 
+  const {authUser} = useSelector(store=>store.user);
+  const {socket} = useSelector(store=>store.socket);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (authUser?._id) {
-      const socket = connectSocket(authUser._id);
-
-      socket.on("getOnlineUsers", (onlineUsers) => {
-        dispatch(setOnlineUsers(onlineUsers));
+  useEffect(()=>{
+    if(authUser){
+      const socketio = io(`${BASE_URL}`, {
+          query:{
+            userId:authUser._id
+          }
       });
+      dispatch(setSocket(socketio));
 
-      return () => disconnectSocket();
-    } else {
-      disconnectSocket();
+      socketio?.on('getOnlineUsers', (onlineUsers)=>{
+        dispatch(setOnlineUsers(onlineUsers))
+      });
+      return () => socketio.close();
+    }else{
+      if(socket){
+        socket.close();
+        dispatch(setSocket(null));
+      }
     }
-  }, [authUser]);
+
+  },[authUser]);
 
   return (
     <div className="flex items-center justify-center h-screen p-4">
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </div>
+
   );
 }
 

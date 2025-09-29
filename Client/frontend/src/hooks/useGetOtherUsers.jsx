@@ -8,23 +8,19 @@ const useGetOtherUsers = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchOtherUsers = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        const res = await axios.get(`${BASE_URL}/api/v1/user/other-users`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        dispatch(setOtherUsers(res.data));
-      } catch (error) {
-        console.error("Failed to fetch other users:", error.response?.data || error.message);
-      }
-    };
-
-    fetchOtherUsers();
-  }, [dispatch]);
+        const fetchOtherUsers = async () => {
+            try {
+                axios.defaults.withCredentials = true;
+                const res = await axios.get(`${BASE_URL}/api/v1/user`);
+                // store
+                console.log("other users -> ",res);
+                dispatch(setOtherUsers(res.data));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchOtherUsers();
+    }, [])
 };
 
 export default useGetOtherUsers;

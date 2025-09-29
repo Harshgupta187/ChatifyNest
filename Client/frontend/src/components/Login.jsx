@@ -5,7 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setAuthUser } from '../redux/userSlice.js';
 import { BASE_URL } from '..';
-import { connectSocket } from '../utils/socket.js';
+
 
 const Login = () => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -20,14 +20,14 @@ const Login = () => {
         withCredentials: true // ✅ include cookies
       });
 
+      navigate("/");
+
       // ✅ save user in Redux
       dispatch(setAuthUser(res.data));
 
-      // ✅ immediately connect socket with userId
-      connectSocket(res.data._id);
 
       toast.success("Logged in successfully!");
-      navigate("/");
+      
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
       console.log(error);

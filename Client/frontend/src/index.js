@@ -7,11 +7,11 @@ import { Provider } from "react-redux";
 import store from './redux/store.js';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist';
-
+import { setSocket } from './redux/SocketSlice.js';
 
 let persistor = persistStore(store);
 
-export const BASE_URL="https://chatifynest.onrender.com"
+export const BASE_URL="https://chatifynest.onrender.com" || "http://localhost:5000"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
