@@ -28,7 +28,7 @@ const MessageContainer = () => {
                 ) : (
                     <div className="md:min-w-[550px] flex flex-col justify-center items-center text-center bg-gray-700/40 rounded-r-2xl">
                         <h1 className="text-3xl font-bold text-white">Hi, {authUser?.fullName}</h1>
-                        <p className="mt-2 text-lg text-gray-300">Start a conversation by selecting a user</p>
+                        <p className="mt-2 text-lg text-gray-300">Select a chat to start messaging</p>
                     </div>
                 )
             }
