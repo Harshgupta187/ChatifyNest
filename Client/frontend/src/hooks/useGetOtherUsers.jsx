@@ -1,13 +1,14 @@
-import { useEffect } from "react";
+
+import React, { useEffect } from 'react';
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setOtherUsers } from "../redux/userSlice.js";
-import { BASE_URL } from "..";
+import { setOtherUsers } from '../redux/userSlice.js';
+import { BASE_URL } from '..';
 
 const useGetOtherUsers = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
+    useEffect(() => {
         const fetchOtherUsers = async () => {
             try {
                 axios.defaults.withCredentials = true;
@@ -21,6 +22,7 @@ const useGetOtherUsers = () => {
         }
         fetchOtherUsers();
     }, [])
-};
 
-export default useGetOtherUsers;
+}
+
+export default useGetOtherUsers

@@ -1,7 +1,8 @@
-import Message from './Message.jsx'
-import useGetMessages from '../hooks/useGetMessages.jsx';
+import React from 'react'
+import Message from './Message'
+import useGetMessages from '../hooks/useGetMessages';
 import { useSelector } from "react-redux";
-import useGetRealTimeMessage from '../hooks/useGetRealTimeMessage.jsx';
+import useGetRealTimeMessage from '../hooks/useGetRealTimeMessage';
 
 const Messages = () => {
     useGetMessages();

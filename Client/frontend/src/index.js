@@ -4,15 +4,13 @@ import './index.css';
 import App from './App';
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
-import store from './redux/store.js';
+import store from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist';
-import { setSocket } from './redux/SocketSlice.js';
 
 let persistor = persistStore(store);
 
-export const BASE_URL="https://chatifynest.onrender.com" || "http://localhost:5000"
-
+export const BASE_URL="http://localhost:5000"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
